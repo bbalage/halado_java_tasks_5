@@ -13,34 +13,39 @@ public class Product {
     public String getCurrency() {
         return currency;
     }
+
+    /*If we really want this code to be better then we should use enums or go as far as a
+    * a database containing the changing rules between currencies. In that case, a separate
+    * class could be created for applying the changing rules. A class like CurrencyConverter.*/
     public void setCurrency(String currency) {
         if (currency.equalsIgnoreCase("Euro")) {
-            if (this.currency.equalsIgnoreCase("Ft")) {
-                this.currency = currency;
-                this.price = price / 300;
-            }
+            changeToEuro();
         }
         if (currency.equalsIgnoreCase("Ft")) {
-            if (this.currency.equalsIgnoreCase("Euro")) {
-                this.currency = currency;
-                this.price = price * 300;
-            }
+            changeToForint();
         }
     }
-    public static void changeCurrency(Product[] array) {
-        for(Product item: array) {
-            if (item.getCurrency().equalsIgnoreCase("Euro"))
-                item.setCurrency("Ft");
-            else if (item.getCurrency().equalsIgnoreCase("Ft"))
-                item.setCurrency("Euro");
-        }
-    }
-    public static int comparePrice(Product p1, Product p2) {
-        if (p1.price > p2.price)
+
+    public int comparePrice(Product p) {
+        if (this.price > p.price)
             return 1;
-        else if (p1.price < p2.price)
+        else if (this.price < p.price)
             return 2;
         else
             return 0;
+    }
+
+    private void changeToEuro() {
+        if (this.currency.equalsIgnoreCase("Ft")) {
+            this.currency = "Euro";
+            this.price = price / 300;
+        }
+    }
+
+    private void changeToForint() {
+        if (this.currency.equalsIgnoreCase("Euro")) {
+            this.currency = "Forint";
+            this.price = price * 300;
+        }
     }
 }
